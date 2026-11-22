@@ -4,6 +4,7 @@ const helper = require('./helper.js');
 
 const handleLogin = (e) => {
     e.preventDefault();
+    helper.hideError();
 
     const username = document.querySelector('#user').value;
     const pass = document.querySelector('#pass').value;
@@ -30,6 +31,7 @@ const LoginWindow = () => (
 
 const handleSignup = (e) => {
     e.preventDefault();
+    helper.hideError();
   
     const username = document.querySelector('#user').value;
     const pass = document.querySelector('#pass').value;
@@ -63,20 +65,27 @@ const SignupWindow = () => (
     </form>
 );
 
+
 const init = () => {
     const root = createRoot(document.getElementById('content'));
-  
+
     document.getElementById('loginButton').addEventListener('click', (e) => {
         e.preventDefault();
+
+        helper.hideError();
+
         root.render(<LoginWindow />);
     });
-  
+
     document.getElementById('signupButton').addEventListener('click', (e) => {
         e.preventDefault();
+
+        helper.hideError();
+
         root.render(<SignupWindow />);
     });
-  
+
     root.render(<LoginWindow />);
 };
-  
+
 window.onload = init;
