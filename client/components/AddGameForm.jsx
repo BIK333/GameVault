@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 // Form for adding a new game to the user's collection.

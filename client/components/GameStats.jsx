@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 // Displays statistics about the user's game collection.
