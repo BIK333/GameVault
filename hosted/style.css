@@ -173,4 +173,24 @@ input[type="submit"]:hover {
       padding: 16px;
     }
 }
+
+/* GameVault login error display */
+
+#domoMessage {
+    max-width: 430px;
+    margin: 15px auto;
+    text-align: center;
+}
   
+#domoMessage.hidden {
+    display: none;
+}
+  
+#domoMessage:not(.hidden) {
+    display: block;
+}
+  
+#errorMessage {
+    color: #fca5a5;
+    font-weight: bold;
+}
