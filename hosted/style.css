@@ -1,288 +1,176 @@
-html, body {
-    height: 100%;
-    width: 100%;
+/* GameVault styles */
+
+* {
+    box-sizing: border-box;
+}
+  
+body {
     margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+    background: #101827;
+    color: #f3f4f6;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
 }
-
-#logo {
-    height: 40px;
-    width: 40;
-    padding-top: 5px;
-    float:left;
-    border-radius: 8px;
-}
-
+  
 nav {
-    width: 100%;
-    height: 50px;
-    background-color: #55acee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 7%;
+    background: #1b2940;
+    border-bottom: 1px solid #34445c;
 }
-
-nav:nth-child(1) {
-    padding-left: 25px;
-}
-
-.navlink {
-    padding: 5px;
-    padding-top: 12px;
-    padding-left: 20px;
-    color: white;
-    font-size: 1.3em;
-    float: left;
-}
-
-.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
+  
+nav a {
     color: white;
     text-decoration: none;
-    padding: 5px;
-    border-radius: 4px;
-    background-color: #55acee;
-    transition: background-color 0.4s ease;
+    font-weight: bold;
 }
-
-.navlink a:hover {
-    transition: background-color 0.8s ease;
-    background-color: #66bdff;
+  
+.site-logo {
+    color: #7dd3fc;
+    font-size: 24px;
 }
-
-.domoForm {
-    border: 2px solid #338acc;
-    height: 35px;
-    width: 700px;
-    margin-top:0px;
-    padding-top:10px;
-    background-color: #55acee;
-    border-bottom-right-radius: 4px;
-    border-top-right-radius: 4px;
+  
+.gamevault-app {
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 0 20px;
 }
-
-.domoForm label {
-    display: inline-block;
-    width: 75px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    float: left;
-    color: white;
+  
+h1 {
+    font-size: 36px;
+    margin-bottom: 8px;
 }
-
-.domoForm input[type=text] {
-    float:left;
+  
+h2 {
+    margin-top: 0;
 }
-
-.makeDomoSubmit {
-    transition: background-color 0.4s ease;
-    display: inline;
-    width: 90px;
-    background-color: #55acee;
-    border-radius: 2px;
-    color: white;
-    text-decoration: none;
+  
+.add-game-form,
+.game-stats,
+.library-section {
+    background: #1b2940;
+    border: 1px solid #34445c;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 25px;
 }
-
-.makeDomoSubmit:link, .makeDomoSubmit:visited, .makeDomoSubmit:hover, .makeDomoSubmit:active {
-    color: white;
+  
+.add-game-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
-
-.makeDomoSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
-}
-
-.mainForm {
-    height: 300px;
-    width: 350px;
-    margin: 0 auto;
-    padding-top: 350px;
-    font-size: 1.2em;
-}
-
-.mainForm h3 {
-    text-align: center;
-}
-
-.mainForm label {
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-    text-align: right;
-    font-size: 1.2em;
-}
-
-.formSubmit {
-    transition: background-color 0.4s ease;
-    display: block;
-    text-align: center;
-    margin: 0 auto;
-    margin-top: 14px;
-    font-size: 1.2em;
-    width: 100px;
-    background-color: #55acee;
-    border-radius: 2px;
-    border-color: #66acee;
-    padding: 3px 0px;
-    color: white;
-    text-decoration: none;
-}
-
-.formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
-    color: white;
-}
-
-.formSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
-}
-
-#user, #pass, #pass2 {
-    text-align: center;
-    font-size: 1.1em;
-    width: 180px;
+  
+input,
+select {
+    padding: 12px;
+    border: 1px solid #64748b;
     border-radius: 6px;
+    background: #f8fafc;
+    color: #111827;
+    font-size: 15px;
 }
-
-#user:focus, #pass:focus, #pass2:focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 1px #55acee;
+  
+button,
+input[type="submit"] {
+    background: #38bdf8;
+    color: #082f49;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }
-
+  
+button:hover,
+input[type="submit"]:hover {
+    background: #7dd3fc;
+}
+  
+.game-filter {
+    margin: 20px 0;
+}
+  
+.game-filter select {
+    margin-left: 10px;
+}
+  
+.game-library {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+}
+  
+.game-card {
+    padding: 20px;
+    border-radius: 10px;
+    background: #263750;
+    border: 1px solid #435671;
+}
+  
+.game-card h3 {
+    margin-top: 0;
+    color: #7dd3fc;
+}
+  
+.game-stats p {
+    margin: 10px 0;
+}
+  
+.error-message {
+    color: #fca5a5;
+}
+  
+.success-message {
+    color: #86efac;
+}
+  
 .hidden {
     display: none;
 }
-
-#domoMessage {
-    top: 250px;
-    width: 250px;
-    height: 650px;
-    position: absolute;
-    z-index: 200;
-    right: 0px;
-    overflow: hidden;
-}
-
-#domoMessage h3 {
-    width: 200px;
-    position: absolute;
-    top: 0px;
-    left: 20px;
-}
-
-#speech {
-    height: 120px;
-    width: 250px;
-    z-index:300;
-}
-
-#errorMessage {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: red;
-    font-style: italic;
-}
-
-#domo {
-    z-index: 225;
-    margin-top: -20px;
-    margin-left: 135px;
-    height: 450px;
-    width: 300px;
-    -ms-transform: rotate(330deg);
-    -webkit-transform: rotate(330deg); 
-    transform: rotate(330deg);
-}
-
-#domos {
-    width: 40%;
-    min-width: 400px;
-    border: 2px solid #55acee;
-    border-radius: 4px;
-    margin: 0 auto;
-    margin-top: 100px;
-}
-
-.domo {
-    width: 95%;
-    margin: 0 auto;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    border: 2px solid #55acee;
-    border-radius: 4px;
-    background-color: #55acee;
-    padding: 10px;
-    min-height:60px;
-    overflow: hidden;
-}
-
-.domo:hover {
-    transition: border-color 0.2s ease-out;
-    border-color: rgba(255,255,255, 0.8);
-    transition: background-color 2.6s ease-out;
-    background-color: #66bfff;
-}
-
-img.domoFace {
-    margin-left: 25px;
-    margin-right: 10px;
-    height: 50px;
-    width: 50px;
-    border-radius: 4px;
-    margin-top:10px;
-    float:left;
-}
-
-h3.emptyDomo {
-    width: 400px;
-    font-size: 1.5em;
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 18px;
-}
-
-h3.domoName {
-    float:left;
-    width: 200px;
-    font-weight: bold;
-    padding-left: 65px;
-    font-size: 1.5em;
-}
-
-h3.domoAge {
-    float:right;
-    text-align: left;
-    width: 100px;
-    font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
-}
-
-.domo:first-child {
-    margin-top: 10px;
-}
-
-.domo:last-child {
-    margin-bottom:10px;
-}
-
-.domoForm {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 15px;
+  
+/* Existing login/signup interface */
+  
+#loginForm,
+#signupForm {
+    max-width: 430px;
+    margin: 35px auto;
+    padding: 25px;
+    background: #1b2940;
+    border-radius: 12px;
 }
   
-.domoForm label {
-    margin: 0;
+#loginForm input,
+#signupForm input {
+    display: block;
+    width: 100%;
+    margin: 10px 0 18px;
 }
   
-.domoForm input[type="number"],
-.domoForm input[type="text"] {
-    width: 100px;
-    margin: 0;
+#loginForm label,
+#signupForm label {
+    display: block;
 }
   
-.domoForm input[type="submit"] {
-    margin: 0;
+@media (max-width: 600px) {
+    nav {
+      padding: 15px;
+    }
+  
+    .gamevault-app {
+      margin-top: 20px;
+    }
+  
+    h1 {
+      font-size: 28px;
+    }
+  
+    .add-game-form,
+    .game-stats,
+    .library-section {
+      padding: 16px;
+    }
 }
+  

@@ -1,125 +1,100 @@
 const React = require('react');
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
-const helper = require('./helper.js');
 
-const DomoForm = ({ onDomoAdded }) => {
-    const handleSubmit = (e) => {
-        e.preventDefault();
+const AddGameForm = require('./components/AddGameForm.jsx').default;
+const GameLibrary = require('./components/GameLibrary.jsx').default;
+const GameFilter = require('./components/GameFilter.jsx').default;
+const GameStats = require('./components/GameStats.jsx').default;
 
-        const name = document.getElementById('domoName').value;
-        const age = document.getElementById('domoAge').value;
-        const level = document.getElementById('domoLevel').value;
-
-        if (!name || age === '' || level === '') {
-            helper.handleError('Name, age, and level are required!');
-            return;
-        }
-
-        helper.sendPost('/maker', { name, age, level }, () => {
-            document.getElementById('domoName').value = '';
-            document.getElementById('domoAge').value = '';
-            document.getElementById('domoLevel').value = '1';
-            onDomoAdded();
-        });
-    };
-
-    return (
-        <form className="domoForm" onSubmit={handleSubmit}>
-        <label htmlFor="domoName">Name: </label>
-        <input id="domoName" type="text" />
-
-        <label htmlFor="domoAge">Age: </label>
-        <input id="domoAge" type="number" min="0" />
-
-        <label htmlFor="domoLevel">Level: </label>
-        <input id="domoLevel" type="number" min="1" defaultValue="1" />
-
-        <input type="submit" value="Make Domo" />
-        </form>
-    );
-};
-
-const DomoList = ({ reload }) => {
-    const [domos, setDomos] = useState([]);
+const App = () => {
+    const [games, setGames] = useState([]);
+    const [filter, setFilter] = useState('All');
     const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(true);
 
-    const handleDelete = async (id) => {
+    // Retrieve the logged-in user's games from MongoDB.
+    const loadGames = async () => {
         try {
-            const response = await fetch('/deleteDomo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }),
-            });
-      
-            const data = await response.json();
-      
+            const response = await fetch('/getGames');
+
             if (!response.ok) {
-                helper.handleError(data.error || 'Could not delete Domo!');
-                return;
+                throw new Error('Could not load your games.');
             }
-      
-            setDomos(domos.filter((domo) => domo._id !== id));
-            helper.hideError();
+
+            const data = await response.json();
+            setGames(data.games);
+            setError('');
         } catch (err) {
-            helper.handleError('Could not delete Domo!');
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        const loadDomos = async () => {
+        loadGames();
+    }, []);
+
+    // Send a new game to the server.
+    const addGame = async (gameData) => {
+        setError('');
+        setMessage('');
+
         try {
-            const response = await fetch('/getDomos');
-            if (!response.ok) {
-                throw new Error('Could not load Domos');
-            }
+            const response = await fetch('/addGame', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(gameData),
+            });
 
             const data = await response.json();
-            setDomos(data.domos);
-            setError('');
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Could not add game.');
+            }
+
+            setMessage('Game added successfully!');
+            await loadGames();
+
+            return true;
         } catch (err) {
-            setError('Could not load Domos!');
+            setError(err.message);
+            return false;
         }
-        };
+    };
 
-    loadDomos();
-    }, [reload]);
-
-    if (error) {
-        return <h3>{error}</h3>;
-    }
-
-    if (domos.length === 0) {
-        return <h3>No Domos Yet!</h3>;
-    }
+    const filteredGames = filter === 'All'
+        ? games
+        : games.filter((game) => game.status === filter);
 
     return (
-    <div className="domoList">
-        {domos.map((domo) => (
-            <div className="domo" key={domo._id}>
-                <h3>Name: {domo.name}</h3>
-                <h3>Age: {domo.age}</h3>
-                <h3>Level: {domo.level ?? 1}</h3>
-          
-                <button type="button" onClick={() => handleDelete(domo._id)}>
-                    Delete Domo
-                </button>
-            </div>
-        ))}
-    </div>
-    );
-};
+        <main className="gamevault-app">
+            <h1>GameVault</h1>
+            <p>Track your games, organize your collection, and monitor your progress.</p>
 
-const App = () => {
-    const [reload, setReload] = useState(0);
+            {error && <p className="error-message">{error}</p>}
+            {message && <p className="success-message">{message}</p>}
 
-    return (
-        <div>
-        <DomoForm onDomoAdded={() => setReload((value) => value + 1)} />
-        <DomoList reload={reload} />
-        </div>
+            <AddGameForm onAddGame={addGame} />
+
+            <GameStats games={games} />
+
+            <section className="library-section">
+                <h2>My Game Library</h2>
+
+                <GameFilter filter={filter} setFilter={setFilter} />
+
+                {loading ? (
+                    <p>Loading your games...</p>
+                ) : (
+                    <GameLibrary games={filteredGames} />
+                )}
+            </section>
+        </main>
     );
 };
 
