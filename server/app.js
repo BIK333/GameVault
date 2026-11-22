@@ -13,7 +13,7 @@ const { RedisStore } = require('connect-redis');
 
 const router = require('./router.js');
 
-// MongoDB connection
+//MongoDB connection
 const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/DomoMaker';
 
 mongoose.connect(dbURI)
@@ -24,41 +24,41 @@ mongoose.connect(dbURI)
   console.error('Could not connect to MongoDB:', err);
 });
 
-// Server port
+//Server port
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-// Redis Cloud connection
+//Redis Cloud connection
 const redisClient = redis.createClient({
-  url: process.env.REDISCLOUD_URL,
+  url: process.env.REDISCLOUD_URL || process.env.REDIS_URL,
 });
 
 redisClient.on('error', (err) => {
   console.error('Redis connection error:', err);
 });
 
-// Connect to Redis before starting the Express server
+//Connect to Redis before starting the Express server
 redisClient.connect().then(() => {
   console.log('Connected to Redis');
 
   const app = express();
 
-  // Trust Heroku's reverse proxy
+  //Trust Heroku's reverse proxy
   app.set('trust proxy', 1);
 
-  // Security middleware
+  //Security middleware
   app.use(helmet());
 
-  // Static assets
+  //Static assets
   app.use('/assets', express.static(path.resolve(__dirname, '../hosted')));
 
-  // Compression
+  //Compression
   app.use(compression());
 
-  // Parse incoming form and JSON data
+  //Parse incoming form and JSON data
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  // Store sessions in Redis
+  //Store sessions in Redis
   app.use(session({
     name: 'sessionid',
     store: new RedisStore({
@@ -75,7 +75,7 @@ redisClient.connect().then(() => {
     },
   }));
 
-  // Handlebars configuration
+  //Handlebars configuration
   app.engine('handlebars', expressHandlebars.engine({
     defaultLayout: false,
   }));
@@ -83,14 +83,14 @@ redisClient.connect().then(() => {
   app.set('view engine', 'handlebars');
   app.set('views', path.resolve(__dirname, '../views'));
 
-  // Require HTTPS when running in production
+  //Require HTTPS when running in production
   const { requiresSecure } = require('./middleware');
   app.use(requiresSecure);
 
-  // Register application routes
+  //Register application routes
   router(app);
 
-  // Start server
+  //Start server
   app.listen(port, (err) => {
     if (err) {
       throw err;
